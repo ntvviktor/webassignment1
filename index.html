@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">     <title>Part4</title>
+    <style>
+        html * {
+            font-family: 'Source Sans Pro', sans-serif !important;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="get" onsubmit=validateForm()>
+        <!-- name, module code, and current date input forms -->
+        <label for="name">Name:</label><br>
+        <!-- check the expression againn -->
+        <input id="name" type="text" name="Name" size ="30" pattern="^[a-zA-Z0-9 ]*$"><br><br> 
+        <label for="moduleCode">Module code:</label><br>
+        <input type="text" id="moduleCode" placeholder ="abc1234" pattern="[a-z]{3}[0-9]{4}" size="30"><br><br>
+
+        <label for="currentDates">Current date:</label><br> 
+        <input type="text" id="currentDates" size ="30" readonly><br><br>
+
+        <!--Message input form-->
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="textarea" rows="3" cols ="20" placeholder="Hello202204" required
+        title="Text must be filled out!"></textarea><br><br>
+
+        <!-- Find and replace input form -->
+        <label for="find">Find:</label><br>
+        <input type="text" id="find" name="find" size="30" oninput="ableReplaceBox()"><br>
+        <label for="replace">Replace:</label><br>
+        <input type="text" id="replace" name="find" size="30"><br><br>
+        <input type="button" id="button" value="Find and Replace" onclick="countFindingWords()">
+        <span id="show"></span>
+        <span id="show2"></span>
+
+        <br><br>
+
+
+        <br>
+        <select name="sourceLanguage">
+            <option value="English" selected>English</option>
+            <option value="Malay">Malay</option>
+            <option value="Japanese">Japanese</option>
+            <option value="Korean">Korean</option>
+        </select><br><br>
+
+        Target language:<br>
+        <input type="radio" name="targetlanguage" value="English">English
+        <input type="radio" name="targetlanguage" value="Chinese">Chinese
+        <input type="radio" name="targetlanguage" value="Malay">Malay
+        <input type="radio" name="targetlanguage" value="Japanese" checked>Japanese
+        <input type="radio" name="targetlanguage" value="Korean">Korean<br><br>
+
+
+        
+        <input type="submit" id="translate" value="Translate" onclick="transferWebsite()">
+    
+        <input type="reset" value="Reset">
+ 
+    </form>
+</body>
+
+ <script>
+     //display a custom date format
+     var today = new Date(); 
+     const days =["Monday", "Tuesday","Wednesday", "Thursday","Friday","Saturday","Sunday"];
+     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+     
+     let hours = today.getHours(); 
+     let minutes = today.getMinutes();
+     let ampm = hours >= 12 ? 'PM' : 'AM';
+     hours = hours % 12;
+     hours = hours ? hours : 12;
+     minutes = minutes.toString().padStart(2, '0');
+    
+     var dates = today.getDate() + " " + months[today.getMonth()] + " " + today.getFullYear() + " " + days[today.getDay()] + " " 
+     + hours + ":"+ minutes + " " + ampm;
+     
+     document.getElementById("currentDates").value = dates; 
+
+
+     //check and ensure the required text boxes of the form is not empty
+     function validateForm(){
+        var name =  document.getElementById("name").value;
+
+        if (name == null || name.trim()==""){
+            alert("Name must be filled out");
+            return false; 
+        }
+
+        var message = document.getElementById("name").value;
+
+        if (message == null || message.trim()==""){
+            alert("Name must be filled out");
+            return false; 
+        } 
+    }
+
+    
+    //Diablse the replace form when find is empty
+    if (find == null || find.trim()==""){
+        document.getElementById("replace").disabled = true;
+        document.getElementById("button").disabled = true;
+    }
+    //Able the replace form after entering the finding words
+    function ableReplaceBox(){
+        let find1 = document.getElementById("find").addEventListener("keypress", function(){
+            document.getElementById("replace").disabled = false;
+            document.getElementById("button").disabled = false;
+    });    
+    }
+        
+    
+
+    //counting the finding words functions
+    function countFindingWords(){
+        var find = document.getElementById("find").value;
+        var count = 0; 
+        var textarea = document.getElementById("message").value;
+        var replace = document.getElementById("replace").value; 
+        //Split the words
+        var split = textarea.split(' ');
+        
+        for (var i = 0; i<split.length; i++){
+            if(split[i] == find){
+                count+=1;
+            }
+        }
+        for (var i = 0; i<split.length; i++){
+            if(split[i] == find){
+                textarea = textarea.replace(split[i], replace);
+            }
+        }
+
+        
+        
+        document.getElementById("show").innerHTML = count + " replacements";
+        document.getElementById("message").value = textarea;
+    }
+
+    function transferWebsite(){
+        window.location.assign("https://translate.google.com");
+    }
+
+    //Question: finding one or more than one words? 
+    
+    
+ </script>
+
+</html>
